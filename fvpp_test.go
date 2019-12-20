@@ -60,25 +60,25 @@ func TestCustomFormat(t *testing.T) {
 		want           string
 	}{
 		{
-			fieldFormat:    fmt.Sprintf("%s-%s-%s", FlagField, FlagType, FlagValue),
+			fieldFormat:    fmt.Sprintf("%s-%s-%s", Field, Type, Value),
 			fieldSeparator: ";",
 			wrapperBegin:   "<",
 			wrapperEnd:     ">",
-			want:           "",
+			want:           "<Name-string-bili;Married-bool-true;Cars-int-2;Deposit-float64-200000>",
 		},
 		{
-			fieldFormat:    fmt.Sprintf("%s>%s>%s", FlagField, FlagValue, FlagType),
+			fieldFormat:    fmt.Sprintf("%s>%s>%s", Field, Value, Type),
 			fieldSeparator: "|",
 			wrapperBegin:   "(",
 			wrapperEnd:     ")",
-			want:           "",
+			want:           "(Name>bili>string|Married>true>bool|Cars>2>int|Deposit>200000>float64)",
 		},
 		{
-			fieldFormat:    fmt.Sprintf("%s#%s#%s", FlagType, FlagField, FlagValue),
+			fieldFormat:    fmt.Sprintf("%s#%s#%s", Type, Field, Value),
 			fieldSeparator: " ",
 			wrapperBegin:   "{",
 			wrapperEnd:     "}",
-			want:           "",
+			want:           "{string#Name#bili bool#Married#true int#Cars#2 float64#Deposit#200000}",
 		},
 	}
 
