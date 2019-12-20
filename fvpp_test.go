@@ -12,11 +12,22 @@ type user struct {
 	Deposit float64
 }
 
-func TestString(t *testing.T) {
+var u = user{
+	Name:    "bili",
+	Married: true,
+	Cars:    2,
+	Deposit: 200000,
+}
+
+func TestPretty(t *testing.T) {
 	tests := []struct {
 		user
 		want string
 	}{
+		{
+			user: u,
+			want: "[Name:'bili'(string) Married:'true'(bool) Cars:'2'(int) Deposit:'200000'(float64)]",
+		},
 		{
 			user: user{
 				Name:    "kili",
@@ -25,15 +36,6 @@ func TestString(t *testing.T) {
 				Deposit: 20000,
 			},
 			want: "[Name:'kili'(string) Married:'false'(bool) Cars:'0'(int) Deposit:'20000'(float64)]",
-		},
-		{
-			user: user{
-				Name:    "bili",
-				Married: true,
-				Cars:    2,
-				Deposit: 200000,
-			},
-			want: "[Name:'bili'(string) Married:'true'(bool) Cars:'2'(int) Deposit:'200000'(float64)]",
 		},
 	}
 
@@ -46,12 +48,40 @@ func TestString(t *testing.T) {
 }
 
 func TestCustomFormat(t *testing.T) {
-	u := user{
-		Name:    "bili",
-		Married: true,
-		Cars:    2,
-		Deposit: 200000,
+	t.Run("BuiltinType", testBuiltinType)
+	t.Run("StructType", testStructType)
+}
+
+func testStructType(t *testing.T) {
+	tests := []struct {
+		Face string
+		Eye  string
+		User user
+		want string
+	}{
+		{
+			Face: "yellow",
+			Eye:  "yellow",
+			User: u,
+			want: "",
+		},
+		{
+			Face: "black",
+			Eye:  "blue",
+			User: u,
+			want: "",
+		},
 	}
+
+	for _, tt := range tests {
+		got := Pretty(tt)
+		if got != tt.want {
+			t.Errorf("test failed, want: %s, but got: %s", tt.want, got)
+		}
+	}
+}
+
+func testBuiltinType(t *testing.T) {
 	tests := []struct {
 		fieldFormat    string
 		fieldSeparator string
