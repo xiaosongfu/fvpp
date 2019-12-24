@@ -47,10 +47,10 @@ var p = people{
 }
 
 func TestPretty(t *testing.T) {
-	//t.Run("BuiltinType", testBuiltinType)
-	//t.Run("StructType", testStructType)
+	t.Run("BuiltinType", testBuiltinType)
+	t.Run("StructType", testStructType)
 	t.Run("NestedStructType", testNestedStructType)
-	//t.Run("MultilayerNestedStructType", testMultilayerNestedStructType)
+	t.Run("MultilayerNestedStructType", testMultilayerNestedStructType)
 }
 
 func testMultilayerNestedStructType(t *testing.T) {
@@ -60,7 +60,7 @@ func testMultilayerNestedStructType(t *testing.T) {
 	}{
 		{
 			people: p,
-			want:   "",
+			want:   "[Face:'black'(string) Eye:'blue'(string) User:'[Name:'bili'(string) Married:'true'(bool) Cars:'2'(int) Deposit:'200000'(float64) Car:'[Brand:'BMW'(string) Wheel:'4'(int) Price:'280000'(float64) Scrapped:'false'(bool)]'(fvpp.car)]'(fvpp.user)]",
 		},
 		{
 			people: people{
@@ -79,12 +79,12 @@ func testMultilayerNestedStructType(t *testing.T) {
 					},
 				},
 			},
-			want: "",
+			want: "[Face:'yellow'(string) Eye:'yellow'(string) User:'[Name:'vik'(string) Married:'false'(bool) Cars:'0'(int) Deposit:'10000'(float64) Car:'[Brand:'XiaoNiu'(string) Wheel:'2'(int) Price:'6000'(float64) Scrapped:'false'(bool)]'(fvpp.car)]'(fvpp.user)]",
 		},
 	}
 
 	for _, tt := range tests {
-		got := Pretty(tt)
+		got := Pretty(tt.people)
 		if got != tt.want {
 			t.Errorf("test failed, want: %s, but got: %s", tt.want, got)
 		}
@@ -98,7 +98,7 @@ func testNestedStructType(t *testing.T) {
 	}{
 		{
 			user: u,
-			want: "",
+			want: "[Name:'bili'(string) Married:'true'(bool) Cars:'2'(int) Deposit:'200000'(float64) Car:'[Brand:'BMW'(string) Wheel:'4'(int) Price:'280000'(float64) Scrapped:'false'(bool)]'(fvpp.car)]",
 		},
 		{
 			user: user{
@@ -113,7 +113,7 @@ func testNestedStructType(t *testing.T) {
 					Scrapped: false,
 				},
 			},
-			want: "",
+			want: "[Name:'bill'(string) Married:'true'(bool) Cars:'100'(int) Deposit:'1e+08'(float64) Car:'[Brand:'Masaladi'(string) Wheel:'6'(int) Price:'1e+07'(float64) Scrapped:'false'(bool)]'(fvpp.car)]",
 		},
 	}
 
@@ -161,9 +161,9 @@ func testBuiltinType(t *testing.T) {
 		"key2": 2,
 	}
 
-	intWant := "[field:'2'(int)]"
-	strWant := "[]"
-	mapWant := ""
+	intWant := "not a struct"
+	strWant := "not a struct"
+	mapWant := "not a struct"
 
 	got := ""
 	if got = Pretty(intValue); got != intWant {

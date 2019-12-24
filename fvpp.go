@@ -34,29 +34,30 @@ func CustomFormat(value interface{}, fieldFormat, fieldSeparator, wrapperBegin, 
 		n := rType.NumField()
 
 		for i := 0; i < n; i++ {
-			// first,we assume the field is builtin type,so set it `rValue.Field(i).Interface()`
+			// if the field is builtin type,just set it `rValue.Field(i).Interface()`
 			// but if it is a struct,we need recursive each field to got it's value use current function
-			fieldValue := rValue.Field(i).Interface()
+			fieldValue := ""
 
 			if rType.Field(i).Type.Kind() == reflect.Struct {
 				fieldValue = CustomFormat(rValue.Field(i).Interface(), fieldFormat, fieldSeparator, wrapperBegin, wrapperEnd)
+			} else {
+				fieldValue = fmt.Sprintf("%v", rValue.Field(i).Interface())
 			}
 
 			f := fmt.Sprintf("%v", rType.Field(i).Name)
-			v := fmt.Sprintf("%v", fieldValue)
+			v := fmt.Sprintf("%s", fieldValue)
 			t := fmt.Sprintf("%v", rType.Field(i).Type)
 
-			format := fieldFormat
-			format = strings.ReplaceAll(format, Field, f)
-			format = strings.ReplaceAll(format, Value, v)
-			format = strings.ReplaceAll(format, Type, t)
+			content := fieldFormat
+			content = strings.ReplaceAll(content, Field, f)
+			content = strings.ReplaceAll(content, Value, v)
+			content = strings.ReplaceAll(content, Type, t)
 
-			tmp = append(tmp, format)
+			tmp = append(tmp, content)
 		}
 		return assembleResult(strings.Join(tmp, fieldSeparator), wrapperBegin, wrapperEnd)
 	} else { // builtin types
-		//content :=
-		return assembleResult(fmt.Sprintf("%v", value), wrapperBegin, wrapperEnd)
+		return "not a struct"
 	}
 }
 
